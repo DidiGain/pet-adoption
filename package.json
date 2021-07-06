@@ -4,7 +4,9 @@
   "description": "pet adoption helper",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "parcel src/index.html",
+    "format": "--write 'src/**/*/.{js, jsx}'",
+    "lint": "eslint 'src/**/*/{js.jsx' --quite"
   },
   "repository": {
     "type": "git",
