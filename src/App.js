@@ -1,24 +1,39 @@
 import { render } from "react-dom";
-import { StrictMode } from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { StrictMode, lazy, Suspense } from "react";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+// import SearchParams from "./SearchParams";
+// import Details from "./Details";
+
+const Details = lazy(() => import("./Details"));
+const SearchParams = lazy(() => import("./SearchParams"));
 
 const App = () => {
   return (
     <div>
-      <Router>
-        <header>
-          <Link to="/">
-            <h1>Hey! Adopt Me!</h1>
-          </Link>
-        </header>
-      </Router>
+      <Suspense fallback={(<h2>Loading page...</h2>)}>
+        <Router>
+          <header>
+            <Link to="/">
+              <h1 className="site-title">Hey! Adopt Me!</h1>
+            </Link>
+          </header>
+          <Switch>
+            <Route path="/details/:id">
+              <Details />
+            </Route>
+            <Route path="/">
+              <SearchParams />
+            </Route>
+          </Switch>
+        </Router>
+      </Suspense>
     </div>
-  )
+  );
 };
 
-render (
+render(
   <StrictMode>
     <App />
   </StrictMode>,
   document.getElementById("root")
-)
+);
