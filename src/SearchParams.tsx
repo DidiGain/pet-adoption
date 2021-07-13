@@ -1,25 +1,26 @@
-import { useState, useEffect } from "react";
-import Result from "./Result.js";
-import useBreedList from "./useBreedList.js";
+import { useState, useEffect, FunctionComponent } from "react";
+import Result from "./Result";
+import useBreedList from "./useBreedList";
+import { PetAPIResponse, Animal, Pet } from "./APIResponseTypes";
 
-const ANIMALS = ["dog", "cat", "reptile", "rabbit", "bird"];
+const ANIMALS: Animal[] = ["dog", "cat", "reptile", "rabbit", "bird"];
 
-const SearchParams = () => {
+const SearchParams: FunctionComponent = () => {
   const [location, setLocation] = useState("");
-  const [animal, setAnimal] = useState("");
+  const [animal, setAnimal] = useState("" as Animal);
   const [breed, setBreed] = useState("");
-  const [pets, setPets] = useState([]);
+  const [pets, setPets] = useState([] as Pet[]);
   const [breeds] = useBreedList(animal);
 
   useEffect(() => {
-    requestPets();
+    void requestPets();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function requestPets() {
     const res = await fetch(
       `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
     );
-    const json = await res.json();
+    const json = (await res.json()) as PetAPIResponse;
     setPets(json.pets);
   }
 
@@ -28,7 +29,7 @@ const SearchParams = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          requestPets();
+          void requestPets();
         }}
       >
         <label htmlFor="location">
@@ -46,8 +47,8 @@ const SearchParams = () => {
           <select
             id="animal"
             value={animal}
-            onChange={(e) => setAnimal(e.target.value)}
-            onBlur={(e) => setAnimal(e.target.value)}
+            onChange={(e) => setAnimal(e.target.value as Animal)}
+            onBlur={(e) => setAnimal(e.target.value as Animal)}
           >
             <option />
             {ANIMALS.map((animal) => (
