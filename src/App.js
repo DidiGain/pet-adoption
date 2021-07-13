@@ -1,17 +1,14 @@
-import { render } from "react-dom";
 import { StrictMode, lazy, Suspense } from "react";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-// import SearchParams from "./SearchParams";
-// import Details from "./Details";
+import { Route, Switch, Link } from "react-router-dom";
 
 const Details = lazy(() => import("./Details"));
 const SearchParams = lazy(() => import("./SearchParams"));
 
 const App = () => {
   return (
-    <div>
-      <Suspense fallback={(<h2>Loading page...</h2>)}>
-        <Router>
+    <StrictMode>
+      <div>
+        <Suspense fallback={(<h2>Loading page...</h2>)}>
           <header>
             <Link to="/">
               <h1 className="site-title">Hey! Adopt Me!</h1>
@@ -25,15 +22,10 @@ const App = () => {
               <SearchParams />
             </Route>
           </Switch>
-        </Router>
-      </Suspense>
-    </div>
+        </Suspense>
+      </div>
+    </StrictMode>
   );
 };
 
-render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-  document.getElementById("root")
-);
+export default App;
